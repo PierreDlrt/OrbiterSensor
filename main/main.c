@@ -6,6 +6,9 @@
 /* Includes */
 #include "common.h"
 #include "ble_gap.h"
+#include "esp_sleep.h"
+
+#define SAMPLE_PERIOD 10 // seconds
 
 /* Library function declarations */
 void ble_store_config_init(void);
@@ -14,6 +17,9 @@ void sensor_ble_publish_task(void)
 {
     unsigned int d = 0xdac;
 
+    ESP_LOGI(TAG, "Enabling timer wakeup, %ds\n", SAMPLE_PERIOD);
+    ESP_ERROR_CHECK(esp_sleep_enable_timer_wakeup(SAMPLE_PERIOD * 1000000));
+
     ble_wait_adv_ready();
     ESP_LOGI(TAG, "Starting sensor data advertisement");
 
@@ -21,7 +27,8 @@ void sensor_ble_publish_task(void)
     {
         ble_advertise_data(d);
 
-        vTaskDelay(pdMS_TO_TICKS(10000));
+        // enter deep sleep
+        esp_deep_sleep_start();
     }
 }
 

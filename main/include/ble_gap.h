@@ -17,7 +17,7 @@
 
 /* Public function declarations */
 void ble_wait_adv_ready(void);
-int ble_advertise_data(unsigned int data);
+int ble_advertise_data(unsigned int dataA, unsigned int dataB);
 int ble_start(void);
 
 #endif // GAP_SVC_H

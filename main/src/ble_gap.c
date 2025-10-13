@@ -22,11 +22,11 @@
 static uint8_t own_addr_type;
 static uint8_t addr_val[6] = {0};
 /* Set advertising flags */
-static uint8_t adv_data[2];
+static uint16_t adv_data[2];
 struct ble_hs_adv_fields adv_fields = {
     .flags = BLE_HS_ADV_F_DISC_GEN | BLE_HS_ADV_F_BREDR_UNSUP,
     .mfg_data_len = sizeof adv_data,
-    .mfg_data = adv_data};
+    .mfg_data = (uint8_t *)adv_data};
 /* Set non-connectable and general discoverable mode to be a beacon */
 struct ble_gap_adv_params adv_params = {
     .conn_mode = BLE_GAP_CONN_MODE_NON,
@@ -194,12 +194,13 @@ int ble_start(void)
     return ret;
 }
 
-int ble_advertise_data(unsigned int data)
+int ble_advertise_data(unsigned int dataA, unsigned int dataB)
 {
     /* Local variables */
     int rc = 0;
-    adv_data[0] = data >> 8;
-    adv_data[1] = data & 0xff;
+
+    adv_data[0] = dataA;
+    adv_data[1] = dataB;
 
     /* Set advertiement fields */
     rc = ble_gap_adv_set_fields(&adv_fields);

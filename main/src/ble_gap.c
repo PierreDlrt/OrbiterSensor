@@ -16,7 +16,7 @@
 #include "nimble/nimble_port_freertos.h"
 
 /* Defines */
-#define DEVICE_NAME "OrbiterX"
+#define TAG "BLE_GAP"
 
 /* Private variables */
 static uint8_t own_addr_type;

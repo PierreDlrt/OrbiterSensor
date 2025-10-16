@@ -22,6 +22,6 @@
 #include <freertos/task.h>
 
 /* Defines */
-#define TAG "NimBLE_Beacon"
+#define DEVICE_NAME "OrbiterX"
 
 #endif // COMMON_H

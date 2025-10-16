@@ -4,6 +4,8 @@
 #define ADC1_CHAN2 ADC_CHANNEL_2 // R = 1k ohm
 #define ADC1_CHAN3 ADC_CHANNEL_3 // R = 10k ohm
 
+#define TAG "ADC"
+
 static adc_oneshot_unit_handle_t adc1_handle;
 static adc_cali_handle_t adc1_cali_chan0_handle = NULL;
 static adc_cali_handle_t adc1_cali_chan1_handle = NULL;

@@ -8,17 +8,13 @@
 #include "ble_gap.h"
 #include "esp_sleep.h"
 #include "adc.h"
-#include "light_sensor.h"
 
-#define SAMPLE_PERIOD 10 // seconds
-
-#define PULL_UP_RES_CHAN2 1000
-#define PULL_UP_RES_CHAN3 10000
+#define SAMPLE_PERIOD 10 // second
+#define TAG DEVICE_NAME
 
 void sensor_ble_publish_task(void)
 {
     int Vchan2, Vchan3;
-    float Rchan2, Rchan3;
 
     ESP_LOGI(TAG, "Enabling timer wakeup, %ds\n", SAMPLE_PERIOD);
     ESP_ERROR_CHECK(esp_sleep_enable_timer_wakeup(SAMPLE_PERIOD * 1000000));
@@ -30,14 +26,10 @@ void sensor_ble_publish_task(void)
     {
         read_adc(&Vchan2, &Vchan3);
 
-        Rchan2 = getPhotoResistance(Vchan2, PULL_UP_RES_CHAN2);
-        Rchan3 = getPhotoResistance(Vchan3, PULL_UP_RES_CHAN3);
-        ESP_LOGD(TAG, "Vchan 2 (1kohm) = %dmV ; Vchan 3 (10kohm) = %dmV\n",
+        ESP_LOGI(TAG, "Vchan 2 (1kohm) = %dmV ; Vchan 3 (10kohm) = %dmV\n",
                  Vchan2, Vchan3);
-        ESP_LOGD(TAG, "R chan2 = %f (L = %f), R chan3 = %f (L = %f)\n",
-                 Rchan2, 1 / Rchan2, Rchan3, 1 / Rchan3);
 
-        ble_advertise_data(Rchan2, Rchan3);
+        ble_advertise_data(Vchan2, Vchan3);
 
         // enter deep sleep
         esp_deep_sleep_start();
